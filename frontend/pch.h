@@ -6,6 +6,6 @@
 #include "framework.h"
 
 #define ATS_EXPORTS
-#include "atsplugin.h"
+#include "../atsplugin.h"
 
 #endif //PCH_H
