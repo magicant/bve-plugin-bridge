@@ -1,8 +1,32 @@
 ﻿// dllmain.cpp : DLL entry point
 #include "pch.h"
 
+#include <filesystem>
+#include <string>
+
 namespace {
     HMODULE dll_module_handle;
+
+    std::filesystem::path get_module_file_name(HMODULE hModule)
+    {
+        std::wstring name;
+        name.resize(1u << 8);
+        while (name.size() < 1u << 16) {
+            DWORD s = GetModuleFileNameW(
+                hModule,
+                name.data(),
+                static_cast<DWORD>(name.size()));
+            if (0 < s && s < name.size()) {
+                name.resize(s);
+                name.shrink_to_fit();
+                return std::move(name);
+            }
+            name.resize(name.size() * 2);
+        }
+        name.clear();
+        name.shrink_to_fit();
+        return std::move(name);
+    }
 }
 
 BOOL APIENTRY DllMain(HMODULE hModule, DWORD  ul_reason_for_call, LPVOID)
