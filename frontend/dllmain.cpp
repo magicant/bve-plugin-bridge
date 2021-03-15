@@ -146,7 +146,7 @@ ATS_API void WINAPI Load() {
         NULL,
         NULL,
         &startup_info,
-        &process_info))     {
+        &process_info)) {
         CloseHandle(reader_to_backend);
         CloseHandle(writer_to_backend);
         CloseHandle(reader_from_backend);

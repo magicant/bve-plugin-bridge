@@ -115,7 +115,7 @@ struct arrayref {
     T *head;
 
     constexpr explicit arrayref(T *head) noexcept : head{head} {}
-    constexpr explicit arrayref(T (*head)[N]) noexcept : head{*head} {}
+    constexpr explicit arrayref(T(*head)[N]) noexcept : head{*head} {}
 };
 
 template<typename CharT, typename Traits, typename T, std::size_t N>
