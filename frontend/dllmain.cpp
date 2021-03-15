@@ -1,10 +1,15 @@
 ﻿// dllmain.cpp : DLL entry point
-#include "pch.h"
+
+#define WIN32_LEAN_AND_MEAN
+#include <windows.h>
+#define ATS_EXPORTS
 
 #include <array>
 #include <cstddef>
 #include <filesystem>
 #include <string>
+#include <string_view>
+#include "../encoder.h"
 
 namespace {
     HMODULE dll_module_handle;
@@ -48,11 +53,11 @@ namespace {
         return path;
     }
 
-    bool send_to_backend(const std::string &s) {
+    bool send_to_backend(const std::string_view &s) {
         DWORD written_count;
         return WriteFile(
             pipe_to_backend,
-            s.c_str(),
+            s.data(),
             static_cast<DWORD>(s.size()),
             &written_count, NULL);
     }
@@ -141,8 +146,7 @@ ATS_API void WINAPI Load() {
         NULL,
         NULL,
         &startup_info,
-        &process_info))
-    {
+        &process_info))     {
         CloseHandle(reader_to_backend);
         CloseHandle(writer_to_backend);
         CloseHandle(reader_from_backend);
@@ -160,12 +164,12 @@ ATS_API void WINAPI Load() {
     pipe_from_backend = reader_from_backend;
 
     // Call the Load function on the backend
-    send_to_backend("Load");
+    send_to_backend("Load\n");
 }
 
 ATS_API void WINAPI Dispose() {
     // Call the Dispose function on the backend
-    send_to_backend("Dispose");
+    send_to_backend("Dispose\n");
 
     // Close pipes
     CloseHandle(pipe_to_backend);
@@ -175,9 +179,15 @@ ATS_API void WINAPI Dispose() {
 }
 
 ATS_API void WINAPI SetVehicleSpec(ATS_VEHICLESPEC spec) {
+    std::ostringstream s;
+    s << "SetVehicleSpec " << spec << std::endl;
+    send_to_backend(std::move(s).str());
 }
 
 ATS_API void WINAPI Initialize(int brake) {
+    std::ostringstream s;
+    s << "Initialize " << brake << std::endl;
+    send_to_backend(std::move(s).str());
 }
 
 ATS_API ATS_HANDLES WINAPI Elapse(
@@ -187,31 +197,57 @@ ATS_API ATS_HANDLES WINAPI Elapse(
 }
 
 ATS_API void WINAPI SetPower(int notch) {
+    std::ostringstream s;
+    s << "SetPower " << notch << std::endl;
+    send_to_backend(std::move(s).str());
 }
 
 ATS_API void WINAPI SetBrake(int notch) {
+    std::ostringstream s;
+    s << "SetBrake " << notch << std::endl;
+    send_to_backend(std::move(s).str());
 }
 
 ATS_API void WINAPI SetReverser(int notch) {
+    std::ostringstream s;
+    s << "SetReverser " << notch << std::endl;
+    send_to_backend(std::move(s).str());
 }
 
 ATS_API void WINAPI KeyDown(int key) {
+    std::ostringstream s;
+    s << "KeyDown " << key << std::endl;
+    send_to_backend(std::move(s).str());
 }
 
 ATS_API void WINAPI KeyUp(int key) {
+    std::ostringstream s;
+    s << "KeyUp " << key << std::endl;
+    send_to_backend(std::move(s).str());
 }
 
 ATS_API void WINAPI HornBlow(int type) {
+    std::ostringstream s;
+    s << "HornBlow " << type << std::endl;
+    send_to_backend(std::move(s).str());
 }
 
 ATS_API void WINAPI DoorOpen() {
+    send_to_backend("DoorOpen\n");
 }
 
 ATS_API void WINAPI DoorClose() {
+    send_to_backend("DoorClose\n");
 }
 
 ATS_API void WINAPI SetSignal(int aspect) {
+    std::ostringstream s;
+    s << "SetSignal " << aspect << std::endl;
+    send_to_backend(std::move(s).str());
 }
 
 ATS_API void WINAPI SetBeaconData(ATS_BEACONDATA data) {
+    std::ostringstream s;
+    s << "SetBeaconData " << data << std::endl;
+    send_to_backend(std::move(s).str());
 }
