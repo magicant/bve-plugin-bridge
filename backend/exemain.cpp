@@ -170,10 +170,10 @@ namespace
             }
             else if (command == "Elapse"sv) {
                 ATS_VEHICLESTATE state;
-                std::array<int, 256> panels, sounds;
-                if (line >> state >> panels >> sounds) {
-                    ATS_HANDLES handles = elapse(state, panels.data(), sounds.data());
-                    std::cout << handles << panels << sounds << std::endl;
+                int panels[256], sounds[256];
+                if (line >> state >> arrayref(&panels) >> arrayref(&sounds)) {
+                    ATS_HANDLES handles = elapse(state, panels, sounds);
+                    std::cout << handles << arrayref(&panels) << arrayref(&sounds) << std::endl;
                 }
             }
             else if (command == "SetPower"sv) {

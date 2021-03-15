@@ -193,7 +193,25 @@ ATS_API void WINAPI Initialize(int brake) {
 ATS_API ATS_HANDLES WINAPI Elapse(
     ATS_VEHICLESTATE state, int *panelValues, int *soundStates)
 {
-    return ATS_HANDLES{};
+    ATS_HANDLES handles{};
+
+    std::ostringstream s;
+    s << "Elapse "
+        << state
+        << arrayref<int, 256>(panelValues)
+        << arrayref<int, 256>(soundStates)
+        << std::endl;
+
+    if (s) {
+        send_to_backend(std::move(s).str());
+
+        std::string buffer = receive_from_backend();
+        std::istringstream line(std::move(buffer));
+        line >> handles
+            >> arrayref<int, 256>(panelValues)
+            >> arrayref<int, 256>(soundStates);
+    }
+    return handles;
 }
 
 ATS_API void WINAPI SetPower(int notch) {

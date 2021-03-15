@@ -110,24 +110,32 @@ std::basic_istream<CharT, Traits> &operator>>(
         >> v.ConstantSpeed;
 }
 
-template<typename CharT, typename Traits, std::size_t N>
+template<typename T, std::size_t N>
+struct arrayref {
+    T *head;
+
+    constexpr explicit arrayref(T *head) noexcept : head{head} {}
+    constexpr explicit arrayref(T (*head)[N]) noexcept : head{*head} {}
+};
+
+template<typename CharT, typename Traits, typename T, std::size_t N>
 std::basic_ostream<CharT, Traits> &operator<<(
-    std::basic_ostream<CharT, Traits> &s, const std::array<int, N> &v)
+    std::basic_ostream<CharT, Traits> &s, arrayref<T, N> v)
 {
-    for (auto &e : v) {
-        if (!(s << ' ' << e)) {
+    for (size_t i = 0; i < N; i++) {
+        if (!(s << ' ' << v.head[i])) {
             break;
         }
     }
     return s;
 }
 
-template<typename CharT, typename Traits, std::size_t N>
+template<typename CharT, typename Traits, typename T, std::size_t N>
 std::basic_istream<CharT, Traits> &operator>>(
-    std::basic_istream<CharT, Traits> &s, std::array<int, N> &v)
+    std::basic_istream<CharT, Traits> &s, arrayref<T, N> v)
 {
-    for (auto &e : v) {
-        if (!(s >> e)) {
+    for (size_t i = 0; i < N; i++) {
+        if (!(s >> v.head[i])) {
             break;
         }
     }
