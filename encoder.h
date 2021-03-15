@@ -1,5 +1,6 @@
 #pragma once
 
+#include <array>
 #include <iomanip>
 #include <ios>
 #include <istream>
@@ -107,4 +108,28 @@ std::basic_istream<CharT, Traits> &operator>>(
         >> v.Power
         >> v.Reverser
         >> v.ConstantSpeed;
+}
+
+template<typename CharT, typename Traits, std::size_t N>
+std::basic_ostream<CharT, Traits> &operator<<(
+    std::basic_ostream<CharT, Traits> &s, const std::array<int, N> &v)
+{
+    for (auto &e : v) {
+        if (!(s << ' ' << e)) {
+            break;
+        }
+    }
+    return s;
+}
+
+template<typename CharT, typename Traits, std::size_t N>
+std::basic_istream<CharT, Traits> &operator>>(
+    std::basic_istream<CharT, Traits> &s, std::array<int, N> &v)
+{
+    for (auto &e : v) {
+        if (!(s >> e)) {
+            break;
+        }
+    }
+    return s;
 }
