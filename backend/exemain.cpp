@@ -171,8 +171,9 @@ namespace
             else if (command == "Elapse"sv) {
                 ATS_VEHICLESTATE state;
                 std::array<int, 256> panels, sounds;
-                if (line >> state) {
-                    ;// TODO
+                if (line >> state >> panels >> sounds) {
+                    ATS_HANDLES handles = elapse(state, panels.data(), sounds.data());
+                    std::cout << handles << panels << sounds << std::endl;
                 }
             }
             else if (command == "SetPower"sv) {
