@@ -42,6 +42,22 @@ Bve 5 用のプラグインが含まれている既存の車両データに bve-
 - [`backend/exemain.cpp`](backend/exemain.cpp): `backend.exe` の実装。
 - [`encoder.h`](encoder.h): `ATS_VEHICLESPEC` などのデータ構造と文字列の間を相互に変換する処理。 `frontend/dllmain.cpp` と `backend/exemain.cpp` の両方で使います。
 
+## 既知の課題
+
+解説に書いた通り、bve-plugin-bridge を使用するとプラグインが BVE 本体とは別のアプリケーションプロセスで動作するようになります。したがって、BVE 本体と同じプロセスで動作する前提の作りになっているプラグインは正常に動作しない可能性があります。
+
+現在、正常に動作しないことが分かっているものは
+
+- FWCH さんの MotorMaster.dll
+
+(その他、情報がありましたらご連絡ください)
+
 ## ライセンス
 
 The Unlicense (パブリックドメイン)
+
+## 質問・問い合わせ
+
+- [ツイッター](https://twitter.com/tnacigam)で
+- [メール](mailto:magicant@wonderwand.net)で
+- [Issues](https://github.com/magicant/bve-plugin-bridge/issues/new) で
