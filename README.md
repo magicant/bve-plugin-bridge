@@ -8,7 +8,7 @@ Bve 5 用のプラグインが含まれている既存の車両データに bve-
 
 なお、DetailManager.dll で複数のプラグインを同時に使用している場合は、DetailManager.dll に対してだけ下記の手順を行ってください。全部の dll ファイルにそれぞれ bve-plugin-bridge を導入する必要はありません。
 
-1. [リリースページ](https://github.com/magicant/bve-plugin-bridge/releases)から backend.exe と frontend.dll を両方ともダウンロードしてください。
+1. [リリースページ](https://github.com/magicant/bve-plugin-bridge/releases)から bve-plugin-bridge-v1.zip をダウンロードしてください。ZIP ファイルの中に backend.exe と frontend.dll が入っています。
 1. 車両の既存のプラグインがあるフォルダーに backend.exe と frontend.dll を入れます。
 1. 以下のようにファイル名を変更します。
    - `backend.exe` のファイル名の拡張子以外の部分を、既存のプラグインに合わせます。
