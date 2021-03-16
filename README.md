@@ -6,6 +6,8 @@ Bve 5 用のプラグインを BVE 6 で使うための変換プラグインで�
 
 Bve 5 用のプラグインが含まれている既存の車両データに bve-plugin-bridge を導入する方法を説明します。
 
+なお、DetailManager.dll で複数のプラグインを同時に使用している場合は、DetailManager.dll に対してだけ下記の手順を行ってください。全部の dll ファイルにそれぞれ bve-plugin-bridge を導入する必要はありません。
+
 1. [リリースページ](https://github.com/magicant/bve-plugin-bridge/releases)から backend.exe と frontend.dll を両方ともダウンロードしてください。
 1. 車両の既存のプラグインがあるフォルダーに backend.exe と frontend.dll を入れます。
 1. 以下のようにファイル名を変更します。
@@ -29,12 +31,16 @@ Bve 5 用のプラグインが含まれている既存の車両データに bve-
 
 **注意!** ファイル名が間違っていると正常に動作しません。追加する二つのファイルは既存のプラグインと同じフォルダーに置く必要があります。よく確かめてください。
 
-DetailManager.dll で複数のプラグインを同時に使用している場合は、DetailManager.dll に対してだけ上記の手順を行ってください。全部の dll ファイルにそれぞれ bve-plugin-bridge を導入する必要はありません。
-
-## 仕組み
+## 解説
 
 `frontend.dll` は BVE 6 から呼び出される 64 ビットのプラグインであり、内部で `backend.exe` を起動し、無名パイプを使って相互に通信します。
 `backend.exe` は Bve 5 の代わりに既存のプラグインを呼び出す 32 ビットアプリケーションです。
+
+主要なソースコードファイルは以下の三つです。
+
+- [`frontend/dllmain.cpp`](frontend/dllmain.cpp): `frontend.dll` の実装。
+- [`backend/exemain.cpp`](backend/exemain.cpp): `backend.exe` の実装。
+- [`encoder.h`](encoder.h): `ATS_VEHICLESPEC` などのデータ構造と文字列の間を相互に変換する処理。 `frontend/dllmain.cpp` と `backend/exemain.cpp` の両方で使います。
 
 ## ライセンス
 
