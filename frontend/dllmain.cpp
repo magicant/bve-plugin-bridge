@@ -7,6 +7,7 @@
 #include <array>
 #include <cstddef>
 #include <filesystem>
+#include <sstream>
 #include <string>
 #include <string_view>
 #include "../encoder.h"
