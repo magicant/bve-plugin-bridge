@@ -43,14 +43,14 @@ namespace
         f = GetProcAddress(library_handle, "Load");
         if (f == NULL) {
             std::cerr << "Failed to load the Load function" << std::endl;
-            return false;
+            // return false;
         }
         decltype(Load) *load = reinterpret_cast<decltype(Load) *>(f);
 
         f = GetProcAddress(library_handle, "Dispose");
         if (f == NULL) {
             std::cerr << "Failed to load the Dispose function" << std::endl;
-            return false;
+            // return false;
         }
         decltype(Dispose) *dispose = reinterpret_cast<decltype(Dispose) *>(f);
 
@@ -152,10 +152,14 @@ namespace
 
             using namespace std::literals;
             if (command == "Load"sv) {
-                load();
+                if (load) {
+                    load();
+                }
             }
             else if (command == "Dispose"sv) {
-                dispose();
+                if (dispose) {
+                    dispose();
+                }
             }
             else if (command == "SetVehicleSpec"sv) {
                 ATS_VEHICLESPEC spec;
