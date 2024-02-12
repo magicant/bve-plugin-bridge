@@ -60,4 +60,4 @@ The Unlicense (パブリックドメイン)
 
 - [ツイッター](https://twitter.com/tnacigam)で
 - [メール](mailto:magicant@wonderwand.net)で
-- [Issues](https://github.com/magicant/bve-plugin-bridge/issues/new) で
+- [Discussions](https://github.com/magicant/bve-plugin-bridge/discussions/new) で
