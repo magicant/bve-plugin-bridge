@@ -64,7 +64,7 @@ namespace {
     }
 
     std::string receive_from_backend() {
-        std::array<char, 8192> buffer{};
+        std::array<char, 32768> buffer{};
         DWORD read_count = 0;
         if (!ReadFile(
             pipe_from_backend,
@@ -199,8 +199,8 @@ ATS_API ATS_HANDLES WINAPI Elapse(
     std::ostringstream s;
     s << "Elapse "
         << state
-        << arrayref<int, 256>(panelValues)
-        << arrayref<int, 256>(soundStates)
+        << arrayref<int, 1024>(panelValues)
+        << arrayref<int, 1024>(soundStates)
         << std::endl;
 
     if (s) {
@@ -209,8 +209,8 @@ ATS_API ATS_HANDLES WINAPI Elapse(
         std::string buffer = receive_from_backend();
         std::istringstream line(std::move(buffer));
         line >> handles
-            >> arrayref<int, 256>(panelValues)
-            >> arrayref<int, 256>(soundStates);
+            >> arrayref<int, 1024>(panelValues)
+            >> arrayref<int, 1024>(soundStates);
     }
     return handles;
 }

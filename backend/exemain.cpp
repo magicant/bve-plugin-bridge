@@ -175,7 +175,7 @@ namespace
             }
             else if (command == "Elapse"sv) {
                 ATS_VEHICLESTATE state;
-                int panels[256], sounds[256];
+                int panels[1024], sounds[1024];
                 if (line >> state >> arrayref(&panels) >> arrayref(&sounds)) {
                     ATS_HANDLES handles = elapse(state, panels, sounds);
                     std::cout << handles << arrayref(&panels) << arrayref(&sounds) << std::endl;
