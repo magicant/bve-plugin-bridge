@@ -115,7 +115,7 @@ ATS_API void WINAPI Load() {
     attrs.lpSecurityDescriptor = NULL;
     attrs.bInheritHandle = true;
     HANDLE reader_to_backend, writer_to_backend;
-    if (!CreatePipe(&reader_to_backend, &writer_to_backend, &attrs, 0)) {
+    if (!CreatePipe(&reader_to_backend, &writer_to_backend, &attrs, 32768)) {
         return;
     }
     if (!SetHandleInformation(writer_to_backend, HANDLE_FLAG_INHERIT, 0)) {
@@ -124,7 +124,8 @@ ATS_API void WINAPI Load() {
         return;
     }
     HANDLE reader_from_backend, writer_from_backend;
-    if (!CreatePipe(&reader_from_backend, &writer_from_backend, &attrs, 0)) {
+    if (!CreatePipe(&reader_from_backend, &writer_from_backend, &attrs, 32768))
+    {
         CloseHandle(reader_to_backend);
         CloseHandle(writer_to_backend);
         return;
