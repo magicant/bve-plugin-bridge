@@ -64,20 +64,29 @@ namespace {
     }
 
     std::string receive_from_backend() {
+        std::string line;
         std::array<char, 8192> buffer{};
-        DWORD read_count = 0;
-        if (!ReadFile(
-            pipe_from_backend,
-            buffer.data(),
-            static_cast<DWORD>(buffer.size()),
-            &read_count,
-            NULL)) {
-            read_count = 0;
-        }
+        for (;;) {
+            DWORD read_count = 0;
+            if (!ReadFile(
+                pipe_from_backend,
+                buffer.data(),
+                static_cast<DWORD>(buffer.size()),
+                &read_count,
+                NULL))
+            {
+                line.clear();
+                break;
+            }
 
-        return std::string(
-            buffer.data(),
-            static_cast<std::size_t>(read_count));
+            std::string_view fragment(
+                buffer.data(), static_cast<std::size_t>(read_count));
+            line.append(fragment);
+            if (fragment.find('\n') != std::string_view::npos) {
+                break;
+            }
+        }
+        return line;
     }
 }
 
